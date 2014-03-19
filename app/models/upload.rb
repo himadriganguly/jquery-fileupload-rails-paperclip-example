@@ -1,6 +1,9 @@
 class Upload < ActiveRecord::Base
   attr_accessible :upload
-  has_attached_file :upload
+  attr_accessible :category
+
+  has_attached_file :upload,
+                    :styles => { :normal => "215x215#", :thumb=> "50x50#" }
 
   include Rails.application.routes.url_helpers
 
@@ -9,6 +12,8 @@ class Upload < ActiveRecord::Base
       "name" => read_attribute(:upload_file_name),
       "size" => read_attribute(:upload_file_size),
       "url" => upload.url(:original),
+      "category" => read_attribute(:category),
+      "thumbnail_url" => upload.url(:thumb),
       "delete_url" => upload_path(self),
       "delete_type" => "DELETE" 
     }

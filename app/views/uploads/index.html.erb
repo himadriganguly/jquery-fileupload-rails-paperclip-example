@@ -35,7 +35,19 @@
     <div class="fileupload-loading"></div>
     <br>
     <!-- The table listing the files available for upload/download -->
-    <table class="table table-striped"><tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery"></tbody>
+    <table class="table table-striped">
+	<thead>
+    		<tr>
+    			<th>Image Thumbnail</th>
+    			<th>Image Name</th>
+    			<th>Image Category</th>
+    			<th>Image Size</th>
+    			<th colspan="2"></th>
+    			<th>Delete Button</th>
+    		</tr>    		
+    	</thead>
+	<tbody class="files" data-toggle="modal-gallery" data-target="#modal-gallery">
+	</tbody>
     </table>
   <% end %>
 
@@ -57,6 +69,14 @@
   <tr class="template-upload fade">
     <td class="preview"><span class="fade"></span></td>
     <td class="name"><span>{%=file.name%}</span></td>
+    <td class="category">    	
+    	<select name="upload[category]">
+		  <option value="category1">Category1</option>
+		  <option value="category2">Category2</option>
+		  <option value="category3">Category3</option>
+		  <option value="category4">Category4</option>
+		</select> 
+    </td> 	
     <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
     {% if (file.error) { %}
     <td class="error" colspan="2"><span class="label label-important">{%=locale.fileupload.error%}</span> {%=locale.fileupload.errors[file.error] || file.error%}</td>
@@ -98,6 +118,7 @@
         <td class="name">
           <a href="{%=file.url%}" title="{%=file.name%}" rel="{%=file.thumbnail_url&&'gallery'%}" download="{%=file.name%}">{%=file.name%}</a>
         </td>
+	<td class="category"><span>{%=file.category%}</span></td>
         <td class="size"><span>{%=o.formatFileSize(file.size)%}</span></td>
         <td colspan="2"></td>
         {% } %}
@@ -115,7 +136,9 @@
 <script type="text/javascript" charset="utf-8">
   $(function () {
       // Initialize the jQuery File Upload widget:
-      $('#fileupload').fileupload();
+      $('#fileupload').fileupload({
+      	singleFileUploads: false
+      });
       // 
       // Load existing files:
       $.getJSON($('#fileupload').prop('action'), function (files) {
